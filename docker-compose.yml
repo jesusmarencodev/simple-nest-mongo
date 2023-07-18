@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  dbMEAN:
+    container_name: db-mean-container
+    image: mongo:5.0.16
+    volumes:
+      - ./mongo:/data/db
+    ports:
+      - 27017:27017
+    restart: always
