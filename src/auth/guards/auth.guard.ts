@@ -29,8 +29,9 @@ export class AuthGuard implements CanActivate {
       // so that we can access it in our route handlers
 
       const user = await this.authService.findById(payload.id);
+      console.log(user);
       if (!user) throw new UnauthorizedException();
-      if (user.isActive) throw new UnauthorizedException('User is not active');
+      if (!user.isActive) throw new UnauthorizedException('User is not active');
 
       request['user'] = user;
     } catch {

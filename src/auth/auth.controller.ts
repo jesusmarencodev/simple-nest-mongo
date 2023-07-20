@@ -37,11 +37,16 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get()
   async findAll(@Request() req: Request): Promise<User[]> {
-    console.log(req['user']);
     return this.authService.findAll();
   }
 
-  @Get(':id')
+  @UseGuards(AuthGuard)
+  @Get('check-token')
+  async checkToken(@Request() req: Request): Promise<LoginResponse> {
+    return this.authService.checkToken(req);
+  }
+
+  /*  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.authService.findOne(+id);
   }
@@ -54,5 +59,5 @@ export class AuthController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.authService.remove(+id);
-  }
+  } */
 }

@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Request } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -64,11 +65,21 @@ export class AuthService {
     return await this.userModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  async checkToken(@Request() req: Request) {
+    const user = req['user'] as User;
+    console.log(user);
+    return {
+      user,
+      token: this.getJWT({ id: user._id }),
+    };
   }
+
   async findById(id: string) {
     return await this.userModel.findById(id);
+  }
+
+  /*  findOne(id: number) {
+    return `This action returns a #${id} auth`;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -77,7 +88,7 @@ export class AuthService {
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
-  }
+  } */
 
   getJWT(payload: JwtPayload) {
     return this.jwtService.sign(payload);
